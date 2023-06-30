@@ -1,13 +1,11 @@
+// Copyright (C) 2023 kaxori.
+// Use of this source code is governed by an MIT-style license
+// that can be found in the LICENSE file.
+
 /**
-class ActionRepeater
+ActionRepeater
 
-
-
-if isActivated, an action will be repeatedly triggered after specified timeout period.
-
-
-- activation:
-
+Repeats an action after defined timeout period.
 */
 class ActionRepeater:
   isActivated_/bool := false    /// true if repetition has been activated

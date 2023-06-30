@@ -2,15 +2,45 @@
 
 ## Install
 ```
-jag pkg install xxxxx
+jag pkg install actionRepeater
 ```
 
 ## Usage
 A simple usage example.
 ``` toit
-import ActionRepeater
+import actionRepeater show *
+
+
+STEP_DELAY ::= 10_000
+startTime := ?
+
+dtStr-> string:
+  return "$(%6.1f (Duration.since startTime).in_ms/1000.0)s :"
+
 
 main:
+  print "\n\n\nTest of ActionRepeater\n"
+  count := 0
+  startTime = Time.now
+
+  action := ActionRepeater --timeout_ms=1_000 --action=::
+    ++count
+    print  dtStr + "action code called #$count"
+
+  sleep --ms=1000
+
+  action.start 200
+  sleep --ms=1000
+  
+  action.start 2000
+  sleep --ms=STEP_DELAY
+
+  action.stop
+  sleep --ms=STEP_DELAY
+
+  action.trigger
+  action.trigger
+
 ```
 See the `examples` folder for more examples.
 
@@ -20,18 +50,3 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 
 [tracker]: https://github.com/kaxori/toit-action-repeater/issues
 
-
----
-# Logbuch
-
-20230629 erste Implementierung läuft erfolgtreich 
-20230630 Erstellung Package "ActionRepeater"
-  - Wie macht man das?
-  Quelle: toit-morse-tutorial, toit-morse, https://docs.toit.io/language/package
-  - Arbeitsverzeichnis "ActionRepeater" angelegt
-  - README.md angelegt
-  - src, test, examples angelegt
-  
-  - Toitdoc: https://docs.toit.io/language/sdk/toitdoc
-    - https://docs.toit.io/language/syntax#identifiers-and-keywords
-    
