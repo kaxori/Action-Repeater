@@ -1,10 +1,10 @@
-# ActionRepeater
+# Action_Repeater
 Repeats an action after defined timeout period.
+
 
 ## Install
 ```
-jag pkg install actionRepeater
-jag pkg install github.com/kaxori/ActionRepeater
+jag pkg install action_repeater
 ```
 
 ## Usage
@@ -50,4 +50,4 @@ See the `examples` folder for more examples.
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: https://github.com/kaxori/actionrepeater/issues
+[tracker]: https://github.com/kaxori/action-repeater/issues

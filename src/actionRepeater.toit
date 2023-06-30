@@ -13,8 +13,8 @@ class ActionRepeater:
   count_/int := 0               /// action call count
   repeaterTask_/Task? := null
   
-  /** creates an repeater object, the repetion is not started automatically. */
-  constructor --action/Lambda --timeout_ms --activate/bool=false:
+  /** creates an repeater object, the repetion is not actived by default. */
+  constructor --action/Lambda --timeout_ms/int --activate/bool=false:
     action_ = action
     isActivated_ = activate
     if isActivated_ and (timeout_ms <= 0): throw "timeout should be greater than 0"
@@ -35,7 +35,7 @@ class ActionRepeater:
     isActivated_ = true
     trigger
   
-  /** Sets the timeout and activates the repetition */
+  /** Sets the timeout and activates the repetition. */
   repeat --timeout_ms/int:
     if timeout_ms <= 0: throw "timeout should be greater than 0"
     timeout_ = timeout_ms
