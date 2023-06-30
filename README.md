@@ -4,6 +4,7 @@ Repeats an action after defined timeout period.
 ## Install
 ```
 jag pkg install actionRepeater
+jag pkg install github.com/kaxori/ActionRepeater
 ```
 
 ## Usage

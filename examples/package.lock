@@ -1,5 +1,1 @@
-prefixes:
-  actionRepeater: ..
-packages:
-  ..:
-    path: ..
+# Toit Lock File.
