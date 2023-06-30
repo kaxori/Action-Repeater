@@ -4,7 +4,6 @@
 
 /**
 ActionRepeater
-
 Repeats an action after defined timeout period.
 */
 class ActionRepeater:
