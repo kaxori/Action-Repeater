@@ -1,1 +1,4 @@
-
+name: action_repeater
+description: Repeats an action after defined timeout period.
+environment:
+  sdk: ^2.0.0-alpha.86

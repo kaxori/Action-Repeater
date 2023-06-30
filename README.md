@@ -1,4 +1,5 @@
 # ActionRepeater
+Repeats an action after defined timeout period.
 
 ## Install
 ```
@@ -48,5 +49,4 @@ See the `examples` folder for more examples.
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: https://github.com/kaxori/toit-action-repeater/issues
-
+[tracker]: https://github.com/kaxori/actionrepeater/issues
