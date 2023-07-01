@@ -1,5 +1,26 @@
 import actionRepeater show *
 
+/**
+
+
+```package.yaml
+dependencies:
+  actionRepeater:
+    path: ../src'
+```
+
+```package.lock
+prefixes:
+  actionRepeater: ..
+packages:
+  ..:
+    path: ..
+```
+
+
+to execute it on host:
+'jag run simple.toit -d host'
+*/
 
 STEP_DELAY ::= 10_000
 startTime := ?

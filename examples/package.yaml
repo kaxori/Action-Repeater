@@ -1,1 +1,3 @@
-# Toit Package File.
+dependencies:
+  actionRepeater:
+    path: ../src

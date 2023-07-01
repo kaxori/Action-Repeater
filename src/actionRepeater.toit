@@ -27,8 +27,8 @@ class ActionRepeater:
 
   /** starts, activates the action trigger and repetition.
   Optionally the timeout value can be set */
-  start timeout_ms/int=null:
-    if timeout_ms:
+  start timeout_ms/int?=null:
+    if timeout_ms != null:
       if timeout_ms <= 0: throw "timeout should be greater than 0"
       timeout_ = timeout_ms
 
