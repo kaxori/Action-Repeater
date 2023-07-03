@@ -4,7 +4,7 @@ test doc ...
 */
 
 
-import actionRepeater show *
+import ..src.actionRepeater show *
 import expect show *
 
 STEP_DELAY ::= 10_000
@@ -33,7 +33,7 @@ main:
   expect action.count == 0
 
   print dtStr + "1st trigger"
-  action.start 1000
+  action.start --timeout_ms=1000 --triggerAtStart
   delay
   expect action.count == 10
 
@@ -53,5 +53,5 @@ main:
   delay
   expect action.count == 30
 
-  print dtStr + "test passed"
+  print dtStr + "test successfully passed"
   sleep --ms=5

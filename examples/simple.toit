@@ -2,22 +2,6 @@ import actionRepeater show *
 
 /**
 
-
-```package.yaml
-dependencies:
-  actionRepeater:
-    path: ../src'
-```
-
-```package.lock
-prefixes:
-  actionRepeater: ..
-packages:
-  ..:
-    path: ..
-```
-
-
 to execute it on host:
 'jag run simple.toit -d host'
 */
@@ -40,10 +24,10 @@ main:
 
   sleep --ms=1000
 
-  action.start 200
+  action.start --timeout_ms=200 --triggerAtStart=true
   sleep --ms=1000
   
-  action.start 2000
+  action.start --timeout_ms=2000
   sleep --ms=STEP_DELAY
 
   action.stop
