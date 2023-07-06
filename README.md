@@ -10,7 +10,7 @@ jag pkg install action_repeater
 ## Usage
 A simple usage example.
 ``` toit
-import actionRepeater show *
+import action_repeater show *
 
 
 STEP_DELAY ::= 10_000
