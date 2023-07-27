@@ -1,4 +1,6 @@
-import actionRepeater show *
+//import action_repeater show *
+import ..src.action_repeater show *
+import log
 
 /**
 
@@ -17,17 +19,22 @@ main:
   print "\n\n\nTest of ActionRepeater\n"
   count := 0
   startTime = Time.now
+  logger := log.default.with_level 0
 
-  action := ActionRepeater --timeout_ms=1_000 --action=::
-    ++count
-    print  dtStr + "action code called #$count"
+
+  action := ActionRepeater --label="test" 
+    --timespan_ms=1_000 
+    --action= :: | flagManualTrigger |
+      ++count
+      trigger := flagManualTrigger?"==> MANUAL":""
+      print dtStr + "action code called #$count $(trigger)"
 
   sleep --ms=1000
 
-  action.start --timeout_ms=200 --triggerAtStart=true
+  action.start --timespan_ms=200 --triggerAtStart=true
   sleep --ms=1000
   
-  action.start --timeout_ms=2000
+  action.start --timespan_ms=2000
   sleep --ms=STEP_DELAY
 
   action.stop

@@ -4,53 +4,79 @@
 
 /**
 ActionRepeater
-Repeats an action after defined timeout period.
+Automatically repeats an action after an specified period of time.
 
 # ToitDoc
-* should be here *
+*Action* is the program code, addressed by a lambda function, that is to be executed.
+An action can be also triggered manually at any time. The repeat time is then reset. 
+*Timespan* is the amount of time after which auto-repeat is triggered.
 
 */
+
+import log
 
 /*
 Implementation class ActionRepeater
 
+How does it work ?
+
+A repeaterTask is created
 */
 class ActionRepeater:
-  isActivated_/bool := false    /// true if repetition has been activated
-  timeout_/int := 0             /// time between repetitions in ms
-  action_/Lambda := ?           /// action to be performed 
-  count_/int := 0               /// action call count
+  
+  isActivated_ /bool := false    /// true if repetition has been activated
+  timespan_ /int := 0                /// time between repetitions in ms
+  action_ /Lambda                /// action to be performed 
   repeaterTask_/Task? := null
+  count_/int := 0               /// action call count
+  logger_ /log.Logger           /// logging 
+  label_ /string                /// object ID (i.e. for log info) 
   
-  
+
   /** creates an repeater object, the repetion is not actived by default. */
-  constructor --action/Lambda --timeout_ms/int --activate/bool=false:
+  constructor 
+      --label/string = "? unlabeled"
+      --action/Lambda
+      --timespan_ms/int 
+      --activate/bool=false:
+
+
+    logger_ = log.default.with_name "action repeater"
+
+    label_ = label
     action_ = action
     isActivated_ = activate
-    if isActivated_ and (timeout_ms <= 0): throw "timeout should be greater than 0"
-    timeout_ = timeout_ms
 
-  /** forces a manually triggered action, repetition starts if activated */
+    if timespan_ms < 5:
+      logger_.info "\"$label\": timespan $timespan_ms ms is very short !"
+    timespan_ = timespan_ms
+
+    if isActivated_ and (timespan_ms <= 0): throw "timeout should be greater than 0"
+
+    logger_.info "\"$label_\" constructed"
+
+  /** manually triggers the action, repetition starts if activated */
   trigger: 
-    call_
+    logger_.info "\"$label_\" manual trigger"
+    call_ --manuallyTriggered=true
     restartRepeater_
 
   /** activates the timeout repetition. A trigger is immediately released if triggerAtStart is set true.
   Optionally the timeout value can be set */
-  start --triggerAtStart/bool?=false --timeout_ms/int?=null:
-    if timeout_ms != null:
-      if timeout_ms <= 0: throw "timeout should be greater than 0"
-      timeout_ = timeout_ms
+  start --triggerAtStart/bool?=false --timespan_ms/int?=null:
+    if timespan_ms != null:
+      if timespan_ms <= 0: throw "timeout should be greater than 0"
+      timespan_ = timespan_ms
 
     isActivated_ = true
     if triggerAtStart: trigger
     restartRepeater_
   
   /** Sets the timeout and activates the repetition. */
-  repeat --timeout_ms/int=null:
-    if timeout_ms != null:
-      if timeout_ms <= 0: throw "timeout should be greater than 0"
-      timeout_ = timeout_ms
+  repeat --timespan_ms/int=null:
+    if timespan_ms != null:
+      if timespan_ms <= 0: throw "timeout should be greater than 0"
+      timespan_ = timespan_ms
     isActivated_ = true
     restartRepeater_
 
@@ -58,25 +84,30 @@ class ActionRepeater:
   stop: 
     isActivated_ = false
     stopRepeater_
+    logger_.info "\"$label_\" repeater stopped"
 
   /** Returns the number of triggered or repeated action calls */
   count->int: return count_
 
-  /** Triggers the action and re-starts the repeater. */
-  call_:
+  /** starts a task and sleeps/wait for the timespan, than the action repetition is triggered */
+  startRepeater_:
+    repeaterTask_ = task :: 
+      sleep --ms=timespan_
+      logger_.info "\"$label_\" repetition triggered"
+      call_ --manuallyTriggered=false
+
+  /** Triggers the action and re-starts the repeater. 
+  The optional parameter indicates a manual trigger.*/
+  call_ --manuallyTriggered/bool=false:
     count_++
-    action_.call
+    action_.call manuallyTriggered
     restartRepeater_
 
+  
   restartRepeater_:
     stopRepeater_
     if isActivated_: 
       startRepeater_
-
-  startRepeater_:
-    repeaterTask_ = task :: 
-      sleep --ms=timeout_
-      call_
 
   stopRepeater_: 
     if repeaterTask_: 
