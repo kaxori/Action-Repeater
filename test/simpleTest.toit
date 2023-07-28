@@ -22,9 +22,10 @@ delay:
 
 main:
   print "\n\n\nTest of ActionRepeater\n"
-  //logger := log.default.with_level log.FATAL_LEVEL
-
-
+  //log.set_default (log.default.with_level 0)
+  //logger := log.default
+  log.set_default (log.default.with_level log.FATAL_LEVEL)
+  logger := log.default
 
   count := 0
   startTime = Time.now

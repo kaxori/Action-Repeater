@@ -7,9 +7,9 @@ ActionRepeater
 Automatically repeats an action after an specified period of time.
 
 # ToitDoc
-*Action* is the program code, addressed by a lambda function, that is to be executed.
+Action is the program code, addressed by a lambda function, that is to be executed.
 An action can be also triggered manually at any time. The repeat time is then reset. 
-*Timespan* is the amount of time after which auto-repeat is triggered.
+Timespan is the amount of time after which auto-repeat is triggered.
 
 */
 
@@ -35,29 +35,28 @@ class ActionRepeater:
 
   /** creates an repeater object, the repetion is not actived by default. */
   constructor 
+      --logger /log.Logger = (log.default.with_name "action repeater")
       --label/string = "? unlabeled"
       --action/Lambda
       --timespan_ms/int 
       --activate/bool=false:
-
-
-    logger_ = log.default.with_name "action repeater"
-
+    
+    logger_ = logger
     label_ = label
     action_ = action
     isActivated_ = activate
 
     if timespan_ms < 5:
-      logger_.info "\"$label\": timespan $timespan_ms ms is very short !"
+      logger_.debug "\"$label\": timespan $timespan_ms ms is very short !"
     timespan_ = timespan_ms
 
     if isActivated_ and (timespan_ms <= 0): throw "timeout should be greater than 0"
 
-    logger_.info "\"$label_\" constructed"
+    logger_.debug "\"$label_\" constructed"
 
   /** manually triggers the action, repetition starts if activated */
   trigger: 
-    logger_.info "\"$label_\" manual trigger"
+    logger_.debug "\"$label_\" manual trigger"
     call_ --manuallyTriggered=true
     restartRepeater_
 
@@ -84,7 +83,7 @@ class ActionRepeater:
   stop: 
     isActivated_ = false
     stopRepeater_
-    logger_.info "\"$label_\" repeater stopped"
+    logger_.debug "\"$label_\" repeater stopped"
 
   /** Returns the number of triggered or repeated action calls */
   count->int: return count_
@@ -93,7 +92,7 @@ class ActionRepeater:
   startRepeater_:
     repeaterTask_ = task :: 
       sleep --ms=timespan_
-      logger_.info "\"$label_\" repetition triggered"
+      logger_.debug "\"$label_\" repetition triggered"
       call_ --manuallyTriggered=false
 
   /** Triggers the action and re-starts the repeater. 

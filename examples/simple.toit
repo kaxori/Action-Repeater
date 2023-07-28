@@ -19,9 +19,9 @@ main:
   print "\n\n\nTest of ActionRepeater\n"
   count := 0
   startTime = Time.now
-  logger := log.default.with_level 0
-
-
+  log.set_default (log.default.with_level log.FATAL_LEVEL)
+  logger := log.default
+  
   action := ActionRepeater --label="test" 
     --timespan_ms=1_000 
     --action= :: | flagManualTrigger |
